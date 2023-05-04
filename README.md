@@ -4,4 +4,4 @@ This repository contains the necessary files for designing and developing ROMR (
 
 All the design, construction and software files are freely available online under the GNU GPL v3 license at https://doi.org/10.17605/OSF.IO/K83X7. A descriptive video of ROMR can be found at https://osf.io/ku8ag.
 
-More information can be found in [this publication](https://cloud.cps.unileoben.ac.at/index.php/apps/files/?dir=/finals&openfile=676015).
+More information can be found in [this publication](https://cps.unileoben.ac.at/cool_timeline/journal-paper-accepted-at-hardware-x/).
