@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+
+<launch>
+
+	<param command="$(find xacro)/xacro $(find romr_robot)/urdf/romr_robot.xacro" name="robot_description"/>
+	<!--
+	<arg name="x" default="0.0" />
+	<arg name="y" default="0.0" />
+  	<arg name="z" default="0.0" /> 
+	-->
+	<arg name="x" value="0.67" />
+	<arg name="y" value="-13.49" />
+  	<arg name="z" value="0.0" />  
+
+	<node args="-param robot_description -urdf -x $(arg x) -y $(arg y) -z $(arg z) -model romr_robot" name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"/>
+
+	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+  
+
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<arg name="paused" value="false"/>
+		<arg name="use_sim_time" value="true"/>  <!-- set to false if on real-world -->
+		<arg name="gui" value="true"/>
+		<arg name="headless" value="false"/>
+		<arg name="debug" value="false"/>
+		<arg name="world_name" value="$(find romr_robot)/worlds/laboratory_world.world"/> 
+	</include>
+
+</launch>
