@@ -81,7 +81,7 @@ if __name__ == '__main__':
                 # Initialize RobotMotionTester instance and set payload and center of gravity values
                 motion_tester = RobotMotionTester()
                 motion_tester.payload_mass = mass # in kg
-                motion_tester.payload_distance = 0.01 # in meters
+                motion_tester.payload_distance = 0.1 # in meters
                 motion_tester.center_of_gravity = cog # in meters
 
                 # Collect data for specified turning radius, linear velocity, and payload mass
