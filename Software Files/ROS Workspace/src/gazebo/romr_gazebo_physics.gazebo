@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<robot name="romr_robot" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+<robot name="romr_ros" xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
 <xacro:property name="standard_friction" value="1.0" />
 <xacro:property name="caster_friction" value="0.01" />
