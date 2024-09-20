@@ -31,8 +31,8 @@ include_directories(
 )
 
 catkin_install_python(PROGRAMS
-   src/send_waypoints.py
-   src/odom_data.py
+   # src/send_waypoints.py
+   # src/odom_data.py
    src/stability_test.py
    
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
