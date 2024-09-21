@@ -53,9 +53,9 @@ add_dependencies(imuOrientToCmdVelTranslater ${catkin_EXPORTED_TARGETS})
 
 # add_executable(detectAndDecide src/detectAndDecide.cpp)
 # target_link_libraries(detectAndDecide 
-${catkin_LIBRARIES}
-${OpenCV_LIBRARIES}
-)
+# ${catkin_LIBRARIES}
+# ${OpenCV_LIBRARIES}
+# )
 find_package(roslaunch)
 
 foreach(dir config gazebo launch maps meshes params src urdf worlds)
