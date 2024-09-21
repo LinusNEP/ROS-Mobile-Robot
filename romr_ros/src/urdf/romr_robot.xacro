@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<robot name="romr_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
-<xacro:include filename="$(find romr_robot)/urdf/romr_materials.xacro" />
-<xacro:include filename="$(find romr_robot)/gazebo/romr_gazebo_materials.gazebo" />  
-<xacro:include filename="$(find romr_robot)/gazebo/romr_gazebo_physics.gazebo" />
-<xacro:include filename="$(find romr_robot)/gazebo/romr_gazebo_plugins.gazebo" />
+<robot name="romr_ros" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<xacro:include filename="$(find romr_ros)/urdf/romr_materials.xacro" />
+<xacro:include filename="$(find romr_ros)/gazebo/romr_gazebo_materials.gazebo" />  
+<xacro:include filename="$(find romr_ros)/gazebo/romr_gazebo_physics.gazebo" />
+<xacro:include filename="$(find romr_ros)/gazebo/romr_gazebo_plugins.gazebo" />
  
   <!--******** Define intertial property macros ********** -->
   
@@ -38,7 +38,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://romr_robot/meshes/base_link.STL" />
+        <mesh filename="package://romr_ros/meshes/base_link.STL" />
       </geometry>
       <material name="white">
       </material>
@@ -46,7 +46,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://romr_robot/meshes/base_link.STL" />
+        <mesh filename="package://romr_ros/meshes/base_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -60,7 +60,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://romr_robot/meshes/rightwheel.STL" />
+        <mesh filename="package://romr_ros/meshes/rightwheel.STL" />
       </geometry>
       <material name="black">
       </material>
@@ -68,7 +68,7 @@
     <collision>
       <origin xyz="0 0 0"  rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://romr_robot/meshes/rightwheel.STL" />
+        <mesh filename="package://romr_ros/meshes/rightwheel.STL" />
       </geometry>
     </collision>
   </link>
@@ -88,7 +88,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://romr_robot/meshes/leftwheel.STL" />
+        <mesh filename="package://romr_ros/meshes/leftwheel.STL" />
       </geometry>
       <material name="black">
       </material>
@@ -96,7 +96,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://romr_robot/meshes/leftwheel.STL" />
+        <mesh filename="package://romr_ros/meshes/leftwheel.STL" />
       </geometry>
     </collision>
   </link>
@@ -116,7 +116,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://romr_robot/meshes/casterwheel.STL" />
+        <mesh filename="package://romr_ros/meshes/casterwheel.STL" />
       </geometry>
       <material name="blue">
       </material>
@@ -124,7 +124,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://romr_robot/meshes/casterwheel.STL" />
+        <mesh filename="package://romr_ros/meshes/casterwheel.STL" />
       </geometry>
     </collision>
   </link>
@@ -144,7 +144,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://romr_robot/meshes/lidar.STL" />
+        <mesh filename="package://romr_ros/meshes/lidar.STL" />
       </geometry>
       <material name="grey">
       </material>
@@ -152,7 +152,7 @@
     <collision>
       <origin  xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://romr_robot/meshes/lidar.STL" />
+        <mesh filename="package://romr_ros/meshes/lidar.STL" />
       </geometry>
     </collision>
   </link>
@@ -172,7 +172,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://romr_robot/meshes/imu.STL" />
+        <mesh filename="package://romr_ros/meshes/imu.STL" />
       </geometry>
       <material name="black">
       </material>
@@ -180,7 +180,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://romr_robot/meshes/imu.STL" />
+        <mesh filename="package://romr_ros/meshes/imu.STL" />
       </geometry>
     </collision>
   </link>
@@ -200,7 +200,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://romr_robot/meshes/camerad435i.STL" />
+        <mesh filename="package://romr_ros/meshes/camerad435i.STL" />
       </geometry>
       <material name="white">
       </material>
@@ -208,7 +208,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://romr_robot/meshes/camerad435i.STL" />
+        <mesh filename="package://romr_ros/meshes/camerad435i.STL" />
       </geometry>
     </collision>
   </link>
@@ -228,7 +228,7 @@
     <visual>
       <origin  xyz="0 0 0"  rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://romr_robot/meshes/camerat265.STL" />
+        <mesh filename="package://romr_ros/meshes/camerat265.STL" />
       </geometry>
       <material name="white">
       </material>
@@ -236,7 +236,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://romr_robot/meshes/camerat265.STL" />
+        <mesh filename="package://romr_ros/meshes/camerat265.STL" />
       </geometry>
     </collision>
   </link>

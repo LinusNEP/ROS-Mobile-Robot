@@ -1,5 +1,5 @@
 <package format="2">
-  <name>romr_robot</name>
+  <name>romr_ros</name>
   <version>1.0.0</version>
   <description>
     <p>URDF Description package for romr_assem.SLDASM</p>
