@@ -4,7 +4,7 @@
 
 	<arg name="gui" default="True" />
 	<param name="use_gui" value="$(arg gui)"/>
-	<param name="robot_description" command="cat $(find romr_robot)/urdf/romr_robot.xacro" />
+	<param name="robot_description" command="cat $(find romr_ros)/urdf/romr_robot.xacro" />
 	
 	<!-- ***** Setting up the transformation configuration (the relationships between the coordinate frames ***** -->
 	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/> 
@@ -21,7 +21,7 @@
 		<param name="baud" value="115200"/>
 	</node>
 	
-       <!-- ***** Launch the RPlidar node ***** -->
-	<include file="$(find rplidar_ros)/launch/rplidar.launch" /> 	
+       <!-- ***** Launch the RPlidar node ***** 
+	<include file="$(find rplidar_ros)/launch/rplidar.launch" /> 	-->
 	
 </launch>

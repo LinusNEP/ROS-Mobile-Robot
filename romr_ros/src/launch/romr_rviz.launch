@@ -6,7 +6,7 @@
     name="model" />
   <param
     name="robot_description"
-    textfile="$(find romr_robot)/urdf/romr_robot.xacro" />
+    textfile="$(find romr_ros)/urdf/romr_robot.xacro" />
  <!-- <node
     name="joint_state_publisher_gui"
     pkg="joint_state_publisher_gui"
@@ -19,6 +19,6 @@
     name="rviz"
     pkg="rviz"
     type="rviz"
-    args="-d $(find romr_robot)/config/rviz_config.rviz" />
+    args="-d $(find romr_ros)/config/rviz_config.rviz" />
 </launch>
 
