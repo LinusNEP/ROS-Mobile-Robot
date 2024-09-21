@@ -51,8 +51,8 @@ add_executable(imuOrientToCmdVelTranslater src/imuOrientToCmdVelTranslater.cpp)
 target_link_libraries(imuOrientToCmdVelTranslater ${catkin_LIBRARIES})
 add_dependencies(imuOrientToCmdVelTranslater ${catkin_EXPORTED_TARGETS})
 
-add_executable(detectAndDecide src/detectAndDecide.cpp)
-target_link_libraries(detectAndDecide 
+# add_executable(detectAndDecide src/detectAndDecide.cpp)
+# target_link_libraries(detectAndDecide 
 ${catkin_LIBRARIES}
 ${OpenCV_LIBRARIES}
 )
