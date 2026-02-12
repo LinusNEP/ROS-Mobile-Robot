@@ -138,7 +138,7 @@ function App() {
     },
     {
       title: 'Sensors',
-      components: ['RPLidar A2 M8', 'Intel RealSense D435i', 'Intel RealSense T265', 'MPU-9250 IMU'],
+      components: ['Ouster 3D LiDAR', 'RPLiDAR A2 M8', 'Intel RealSense D435i', 'Intel RealSense T265', 'MPU-9250 IMU'],
       color: 'from-purple-900 to-purple-700'
     }
   ];
