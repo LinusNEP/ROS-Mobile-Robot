@@ -204,8 +204,8 @@ set_velocity(pitch, roll)`
 
   const galleryImages = [
     { src: 'gallery-1.jpg', alt: 'ROMR in laboratory' },
-    { src: 'gallery-3.png', alt: 'LiDAR scanning' },
-    { src: 'gallery-2.jpg', alt: 'SLAM visualization' },
+    { src: 'gallery-2.jpg', alt: 'LiDAR scanning' },
+    { src: 'gallery-3.png', alt: 'SLAM visualization' },
     { src: 'gallery-4.jpg', alt: 'Electronics close-up' },
     { src: 'gallery-5.jpg', alt: 'Gesture control demo' },
     { src: 'gallery-6.jpg', alt: 'Gazebo simulation' },
