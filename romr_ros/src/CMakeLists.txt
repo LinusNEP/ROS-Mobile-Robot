@@ -32,6 +32,7 @@ include_directories(
 catkin_install_python(PROGRAMS
   src/cmd_vel_watchdog.py
   src/romr_odom_node.py
+  src/stability_test.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
