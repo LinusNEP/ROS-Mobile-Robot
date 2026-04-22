@@ -1,0 +1,50 @@
+# /etc/systemd/system/romr.service
+#
+# Auto-start the ROMR stack on boot. Install with:
+#   sudo cp romr.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable romr.service
+#   sudo systemctl start romr.service
+#
+# Check status / logs:
+#   systemctl status romr
+#   journalctl -u romr -f
+#
+# Edit User=, the ROS_IP, and the workspace path to match your system.
+
+[Unit]
+Description=ROMR ROS bringup
+# Wait for network AND for the WiFi interface to actually have an IP.
+# network-online.target is the key difference vs the common mistake of
+# using network.target, which fires before DHCP completes.
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=romr
+Group=romr
+
+# Give WiFi + roscore a moment to settle after boot.
+ExecStartPre=/bin/sleep 10
+
+# ROS environment. Adjust the distro and workspace path.
+Environment="ROS_MASTER_URI=http://192.168.1.42:11311"
+Environment="ROS_IP=192.168.1.42"
+Environment="HOME=/home/romr"
+
+# Source ROS + your catkin workspace, then launch.
+# The 'bash -lc' form makes sure ~/.bashrc and setup.bash are actually sourced.
+ExecStart=/bin/bash -lc 'source /opt/ros/melodic/setup.bash && \
+    source /home/romr/catkin_ws/devel/setup.bash && \
+    roslaunch romr_bringup romr_bringup.launch'
+
+Restart=on-failure
+RestartSec=5
+
+# Give nodes time to shut down cleanly on stop (rosserial, ODrive, etc.)
+KillSignal=SIGINT
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target
