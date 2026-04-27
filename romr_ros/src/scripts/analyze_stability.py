@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 """
-Analyze stability_test.py output. Per trial, computes:
+This script is used to analyse the ROMR stability test. Each trial, computes:
   - Mean commanded vs measured linear velocity (steady-state portion only)
   - Mean commanded vs measured angular velocity
   - Tracking error
-  - Max IMU roll/pitch during the trial (if present)
+  - Max IMU roll/pitch during the trial
   - Actual turning radius (computed from measured v/omega)
 
 Usage:
@@ -17,11 +17,11 @@ import sys
 import math
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def analyze(path, plot=False):
     df = pd.read_csv(path)
-    # Keep only post-settle samples for steady-state stats.
     ss = df[df["in_settle"] == 0].copy()
 
     # Per-trial summary
@@ -42,7 +42,7 @@ def analyze(path, plot=False):
 
     summary["lin_err"] = summary["meas_lin_mean"] - summary["cmd_lin"]
     summary["ang_err"] = summary["meas_ang_mean"] - summary["cmd_ang"]
-    # Actual radius from measured v/w, guarded against div-by-zero
+    # Actual radius from measured v/w.
     with np.errstate(divide="ignore", invalid="ignore"):
         summary["meas_radius"] = np.where(
             np.abs(summary["meas_ang_mean"]) > 1e-3,
@@ -50,7 +50,7 @@ def analyze(path, plot=False):
             np.inf,
         )
 
-    # IMU stats if present
+    # IMU stats
     if "imu_roll" in ss.columns and ss["imu_roll"].notna().any():
         imu = grp.agg(
             max_roll=("imu_roll", lambda s: s.abs().max()),
@@ -61,8 +61,6 @@ def analyze(path, plot=False):
     print(summary.to_string(index=False, float_format="%.3f"))
 
     if plot:
-        import matplotlib.pyplot as plt
-        # One plot: commanded vs measured linear velocity per trial
         fig, ax = plt.subplots(2, 1, figsize=(10, 6), sharex=True)
         ax[0].plot(summary["trial_idx"], summary["cmd_lin"],
                    "o-", label="commanded")
