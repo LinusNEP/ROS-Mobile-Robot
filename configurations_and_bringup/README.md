@@ -1,12 +1,6 @@
 # ROMR ODrive Calibration & Bringup
 
-This directory contains everything needed to bring a ROMR mobile robot online:
-a hoverboard-motor robot driven by an ODrive v3.6 (firmware 0.5.4), with an
-Arduino Mega handling low-level control and a Jetson Nano running ROS.
-
-The workflow is: configure parameters, calibrate motors and halls, verify
-operation over USB, wire up the Arduino, then stack ROS on top. Each step is
-independent and builds on the last.
+This directory contains everything needed to get started with ROMR setup and calibration. The workflow is as follows: configure parameters, calibrate motors and halls, verify operation over USB, wire up the Arduino, then stack ROS on top. Each step is independent and builds on the last.
 
 ---
 
@@ -30,7 +24,7 @@ hard brake.
 
 ## File overview
 
-### Python — ODrive host scripts
+### Python - ODrive host scripts
 
 | File | Purpose |
 |---|---|
@@ -42,7 +36,7 @@ hard brake.
 | `enable_uart.py` | Enables UART A on the ODrive for Arduino communication. Non-destructive. |
 | `set_startup_behavior.py` | Explicitly ensures the ODrive boots to IDLE and does not auto-arm. Non-destructive. |
 
-### Arduino — low-level firmware
+### Arduino - low-level firmware
 
 | File | Purpose |
 |---|---|
@@ -51,7 +45,7 @@ hard brake.
 | `gesture_handheld.ino` | Handheld transmitter: MPU6050 IMU → nRF24L01+. Maps tilt to velocity commands. Arm button must be held. |
 | `gesture_receiver.ino` | Robot-side receiver: nRF24L01+ → ODrive. Standalone, no ROS required. |
 
-### ROS — host-side (Jetson Nano)
+### ROS - host-side (Jetson Nano)
 
 | File | Purpose |
 |---|---|
@@ -62,7 +56,7 @@ hard brake.
 
 ---
 
-## Safety rules — read first
+## Safety rules - read first
 
 1. **Always put the robot on a stand with wheels off the ground** until all
    bringup and directionality tests are complete. The robot moving
@@ -140,19 +134,15 @@ With the robot on a stand, both wheels free to spin:
 python3 odrive_calibration.py
 ```
 
-You'll be prompted to confirm with `YES` (case-sensitive). The script then
-runs, sequentially on each axis:
+You'll be prompted to confirm with `YES` (case-sensitive). The script then runs, sequentially on each axis:
 
-1. **Motor calibration** — a short beep. Measures phase resistance and
-   inductance.
-2. **Hall polarity calibration** — brief wheel motion.
-3. **Encoder offset calibration** — longer wheel motion, ~150 rad scan.
+1. **Motor calibration**, you will hear a short beep. Measures phase resistance and inductance.
+2. **Hall polarity calibration**, there will be a brief wheel motion.
+3. **Encoder offset calibration**, there will be a longer wheel motion, ~150 rad scan.
 
 Total time: 60–90 seconds.
 
-Expected healthy values for hoverboard motors: phase resistance 0.15–0.25 Ω,
-inductance 300–500 µH. Both axes should end with `encoder OK` and the run
-should save successfully.
+Expected healthy values for hoverboard motors: phase resistance 0.15–0.25 Ω, inductance 300–500 µH. Both axes should end with `encoder OK` and the run should save successfully.
 
 #### If calibration fails
 
@@ -195,11 +185,10 @@ odrv0.axis1.requested_state = AXIS_STATE_IDLE
 
 Both wheels should spin smoothly for 3 seconds. Watch for:
 - Smooth rotation (no grinding, no shaking)
-- No errors — check with `dump_errors(odrv0)` in `odrivetool`
+- No errors, check with `dump_errors(odrv0)` in `odrivetool`
 - Consistent speed between the two wheels
 
-Which direction they spin doesn't matter yet. The Arduino sketches correct
-for that via `M0_DIRECTION` / `M1_DIRECTION`.
+Which direction they spin doesn't matter yet. The Arduino sketches correct that via `M0_DIRECTION` / `M1_DIRECTION`.
 
 ### 5. Enable UART for Arduino
 
@@ -219,14 +208,9 @@ Power off both devices first.
 | Pin 17 (RX2) | GPIO 2 |
 | GND | GND |
 
-**The ground wire is not optional.** Missing common ground is the #1 cause of
-"everything looks right but no communication." The ODrive and Mega are
-separately powered; the ground wire gives their UART signals a shared
-reference.
+**The ground wire is not optional.** Missing common ground is the #1 cause of "everything looks right but no communication." The ODrive and Mega are separately powered; the ground wire gives their UART signals a shared reference.
 
-The Mega gets its power from USB (during development) or a 7–12 V barrel jack
-(in the field). The ODrive gets its power from the main battery. Do not try
-to power one from the other.
+The Mega gets its power from USB (during development) or a 7–12 V barrel jack (in the field). The ODrive gets its power from the main battery. Do not try to power one from the other.
 
 ### 7. RC bringup
 
@@ -285,10 +269,8 @@ In the ROS-Mobile app on your phone (same WiFi):
    `angular.z` (turn).
 3. Dashboard → add a **Button** widget as a dead-man switch: topic
    `/robot/arm`, type `std_msgs/Bool`, on-press value `true`, on-release
-   value `false`. Motors arm while the button is held and disarm when you
-   release — this is the safest arming pattern for teleop.
-4. Optionally add a **Logger** widget on `/robot/armed` and `/odom` to see
-   feedback.
+   value `false`. Motors arm while the button is held and disarm when you release. This is the safest arming pattern for teleop.
+4. Optionally add a **Logger** widget on `/robot/armed` and `/odom` to see feedback.
 
 You can also arm/disarm from the Nano shell:
 ```bash
@@ -298,17 +280,11 @@ rostopic pub -1 /robot/arm std_msgs/Bool "data: false"
 
 **Three layers of safety protect you:**
 
-1. **Explicit arming**: motors won't spin until you publish `true` on
-   `/robot/arm`. No boot-time or launch-time auto-arm anywhere.
-2. **Arduino-side cmd_vel watchdog**: if `/cmd_vel` stops arriving for 500 ms
-   while armed, the Arduino disarms the ODrive itself. Protects against
-   rosserial hangs.
-3. **Host-side cmd_vel_watchdog**: forwards `/cmd_vel_raw` → `/cmd_vel` and
-   publishes zeros when the raw input goes silent. Protects against the
-   app crashing or the phone losing WiFi.
+1. **Explicit arming**: motors won't spin until you publish `true` on `/robot/arm`. No boot-time or launch-time auto-arm anywhere.
+2. **Arduino-side cmd_vel watchdog**: if `/cmd_vel` stops arriving for 500 ms while armed, the Arduino disarms the ODrive itself. Protects against rosserial hangs.
+3. **Host-side cmd_vel_watchdog**: forwards `/cmd_vel_raw` → `/cmd_vel` and publishes zeros when the raw input goes silent. Protects against the app crashing or the phone losing WiFi.
 
-You can verify arming works by watching `/robot/armed` — it should go true
-within ~100 ms of publishing `true` on `/robot/arm`.
+You can verify arming works by watching `/robot/armed`. It should go true within ~100 ms of publishing `true` on `/robot/arm`.
 
 ### 9. Optional: gesture control (third teleop mode)
 
@@ -321,13 +297,11 @@ tilt-derived velocity commands directly to the robot's Arduino.
 - MPU6050 IMU on I2C (SDA=A4, SCL=A5)
 - nRF24L01+ on SPI (MOSI=11, MISO=12, SCK=13, CE=7, CSN=8)
 - Momentary push button between pin 2 and GND (arm button)
-- 3.3 V power for the nRF24 — do NOT power it from the Arduino's 5 V
-  rail, use a regulator or a dedicated 3.3 V supply
+- 3.3 V power for the nRF24 - do NOT power it from the Arduino's 5 V rail, use a regulator or a dedicated 3.3 V supply
 - Small LiPo or AA pack
 
 **Hardware on the robot side:**
-- A second nRF24L01+ plugged into the Mega's SPI bus
-  (MOSI=51, MISO=50, SCK=52, CE=9, CSN=10)
+- A second nRF24L01+ plugged into the Mega's SPI bus (MOSI=51, MISO=50, SCK=52, CE=9, CSN=10)
 - Flash `gesture_receiver.ino` to the Mega (replaces RC or ROS sketch)
 
 **Bringup:**
@@ -335,9 +309,7 @@ tilt-derived velocity commands directly to the robot's Arduino.
 1. Flash `gesture_handheld.ino` to the handheld Arduino. On boot it
    calibrates the gyro (hold still for ~2 seconds, LED solid during cal).
 2. Flash `gesture_receiver.ino` to the robot Mega.
-3. Open Arduino Serial Monitor at 115200 on the robot side. You should
-   see `lin=0.00 ang=0.00 arm=0 armed=0 age=...ms pkt#=N`. If `pkt#`
-   increments and `age` stays below ~100 ms, the link is working.
+3. Open Arduino Serial Monitor at 115200 on the robot side. You should see `lin=0.00 ang=0.00 arm=0 armed=0 age=...ms pkt#=N`. If `pkt#` increments and `age` stays below ~100 ms, the link is working.
 4. Robot still on a stand. Hold the handheld level, press and HOLD the
    arm button. You should see `arm=1` and `armed=1` on the robot serial.
 5. Gently tilt the handheld nose-down. Robot should drive forward.
@@ -382,7 +354,7 @@ independently: from `odrivetool`, confirm `odrv0.axis0.error == 0` and
 before involving the ODrive.
 
 **ROS-Mobile app connects but `/cmd_vel_raw` is empty.** The Android app's
-rosjava stack needs the numeric `ROS_IP` set on the Nano — hostname won't
+rosjava stack needs the numeric `ROS_IP` set on the Nano, hostname won't
 work. `rostopic list` should show the topic even before the app moves the
 stick; if not, check firewall on the Nano (`sudo ufw status`; disable or
 open port 11311 and TCPROS range).
@@ -428,6 +400,4 @@ Gives you a full dump of config and error state. From there:
 
 ## Acknowledgement
 
-Calibration script structure inspired by the ODrive hoverboard tutorial
-(docs.odriverobotics.com) and Austin Owens' robodog config. ROS-Mobile app
-by Nils Rottmann. ROMR platform by Linus Nwankwo.
+The calibration script structure is inspired by the ODrive hoverboard tutorial (docs.odriverobotics.com) and Austin Owens' robodog config. ROS-Mobile app is developed by Nils Rottmann.
