@@ -9,16 +9,12 @@ This directory contains everything needed to get started with ROMR setup and cal
 - **ODrive 3.6** (24 V or 56 V variant) with firmware 0.5.4
 - **Two hoverboard hub motors** with 15 pole pairs and 3 hall sensors each
 - **Arduino Mega 2560**
-- **Jetson Nano** running Ubuntu 18.04 + ROS 1 Melodic (or compatible e.g., Laptop or Mini-PCs: ROS Noetic and ROS 2)
+- **Jetson Nano** running Ubuntu 18.04 + ROS 1 Melodic (or compatible, e.g., Laptop or Mini-PCs: ROS Noetic and ROS 2)
 - **36 V Li-ion battery pack** (10S), optionally with brake resistor
 - **RC transmitter/receiver** with at least 3 channels (for RC control)
 - **Android device** with the ROS-Mobile app (for WiFi teleop)
 
-If your setup differs e.g., different ODrive board, different motors, different
-battery, then the constants at the top of `odrive_parameter_configuration.py`
-**must be reviewed** before running. Voltage trip levels in particular are
-safety-critical: wrong values either prevent motor start or fault on the first
-hard brake.
+If your setup differs, e.g., different ODrive board, different motors, different battery, then the constants at the top of `odrive_parameter_configuration.py` **must be reviewed** before running. Voltage trip levels in particular are safety-critical: wrong values either prevent motor start or cause a fault on the first hard brake.
 
 ---
 
@@ -58,16 +54,10 @@ hard brake.
 
 ## Safety rules - read first
 
-1. **Always put the robot on a stand with wheels off the ground** until all
-   bringup and directionality tests are complete. The robot moving
-   unexpectedly is genuinely dangerous.
-2. **Do not skip the failsafe test** (step 9 in RC bringup below). If a
-   signal-loss disarm fails, the robot will not stop when you lose the
-   transmitter, and at some point you will.
-3. **Know where the physical power switch is.** `Ctrl-C` is not a safety
-   mechanism.
-4. **Keep a hand near the e-stop / battery disconnect during first runs**,
-   especially for the first time under its own weight.
+1. **Always put the robot on a stand with wheels off the ground** until all bringup and directionality tests are complete. The robot moving unexpectedly is genuinely dangerous.
+2. **Do not skip the failsafe test** (step 8 in RC bringup below). If a signal-loss disarm fails, the robot will not stop when you lose the transmitter, and at some point, you will.
+3. **Know where the physical power switch is.** `Ctrl-C` is not a safety mechanism.
+4. **Keep a hand near the e-stop / battery disconnect during first runs**, especially for the first time under its own weight.
 
 ---
 
@@ -75,14 +65,13 @@ hard brake.
 
 ### 1. Install prerequisites
 
-On the host machine (your laptop or the Jetson, wherever you'll run
-configuration from):
+On the host machine (your laptop or the Jetson, wherever you'll run the configuration from):
 
 ```bash
 pip3 install --user odrive==0.5.4
 ```
 
-The exact version matters, ODrive tool API shifted between 0.5.x and 0.6.x.
+The exact version matters; the ODrive tool API shifted between 0.5. x and 0.6. x.
 Scripts here target 0.5.4.
 
 Verify:
@@ -93,17 +82,13 @@ odrivetool --version
 
 ### 2. Parameter configuration
 
-Connect the ODrive to the host via USB. No motors need to be spinning. This
-step just writes constants to flash.
+Connect the ODrive to the host via USB. No motors need to be spinning. This step just writes constants to flash.
 
 ```bash
 python3 odrive_parameter_configuration.py
 ```
 
-**This erases any existing ODrive configuration.** You should run this exactly
-once at the start of the bringup process, or whenever you change firmware or
-hardware. Do not rerun it casually. It wipes motor and encoder calibration
-and you'll have to redo those.
+**This erases any existing ODrive configuration.** You should run this exactly once at the start of the bringup process, or whenever you change firmware or hardware. Do not rerun it casually. It wipes the motor and encoder calibration, and you'll have to redo those.
 
 Expected output ends with:
 
@@ -111,8 +96,7 @@ Expected output ends with:
 Done. Now run odrive_calibration.py with wheels free to spin.
 ```
 
-The `ObjectLostError` during save is normal. USB drops when the ODrive
-reboots.
+The `ObjectLostError` during save is normal. USB drops when the ODrive reboots.
 
 **Review the constants at the top of the script before running** if your
 hardware differs from the ROMR defaults. The ones most likely to need tuning:
@@ -222,20 +206,18 @@ See the `rc_remote_control.ino` header comments for RC receiver wiring:
 Full bringup steps:
 
 1. Transmitter **off**, arm switch in disarmed position.
-2. Power up the ODrive, then plug USB into the Mega.
+2. Power up the ODrive, then plug the USB into the Mega.
 3. Open Arduino Serial Monitor at 115200 baud. Should see:
-   `ROMR RC control ready. Flip arm switch to enable motors.`
-4. Turn on transmitter. Watch `th`, `st`, `md` values respond to stick
+   `ROMR RC control ready. Flip the arm switch to enable motors.`
+4. Turn on the transmitter. Watch `th`, `st`, `md` values respond to stick
    movement. `md` ≈ 1000 when arm switch is down, ≈ 2000 when up.
 5. Flip arm switch. Should see `ARM: closed-loop control` in the log.
-6. Gently push throttle. Check wheel direction:
+6. Gently push the throttle. Check wheel direction:
    - Both forward → good
    - Both backward → flip both `M*_DIRECTION` signs
    - One each way → flip the one going wrong
-7. Test steering: with throttle centered, move steering stick. Wheels should
-   counter-rotate.
-8. **Failsafe test:** with arm on and throttle pushed, turn the transmitter
-   off. Within 300 ms wheels must stop and log shows `DISARM: idle`.
+7. Test steering: with the throttle centred, move the steering stick. Wheels should counter-rotate.
+8. **Failsafe test:** With the arm on and the throttle pushed, turn the transmitter off. Within 300 ms, wheels must stop, and the log shows `DISARM: idle`.
 
 Only after step 8 passes should you put wheels on the ground.
 
@@ -248,11 +230,9 @@ export ROS_MASTER_URI=http://<nano-ip>:11311
 export ROS_IP=<nano-ip>
 ```
 
-Replace `<nano-ip>` with the actual LAN IP (e.g. `192.168.1.42`). The numeric
-IP is important — hostname resolution from Android is unreliable.
+Replace `<nano-ip>` with the actual LAN IP (e.g. `192.168.1.42`). The numeric IP is important — hostname resolution from Android is unreliable.
 
-Flash `ros_mobile_control.ino` to the Mega (replaces the RC sketch). Then on
-the Nano:
+Flash `ros_mobile_control.ino` to the Mega (replaces the RC sketch). Then on the Nano:
 
 ```bash
 roslaunch romr_bringup romr_bringup.launch
@@ -262,14 +242,9 @@ roslaunch romr_bringup romr_bringup.launch
 
 In the ROS-Mobile app on your phone (same WiFi):
 
-1. Master tab → set Master URI to `http://<nano-ip>:11311`, Master IP to
-   `<nano-ip>` → Connect.
-2. Dashboard → add a **Joystick** widget: topic `/cmd_vel_raw`, type
-   `geometry_msgs/Twist`, axes mapped to `linear.x` (fwd/back) and
-   `angular.z` (turn).
-3. Dashboard → add a **Button** widget as a dead-man switch: topic
-   `/robot/arm`, type `std_msgs/Bool`, on-press value `true`, on-release
-   value `false`. Motors arm while the button is held and disarm when you release. This is the safest arming pattern for teleop.
+1. Master tab → set Master URI to `http://<nano-ip>:11311`, Master IP to `<nano-ip>` → Connect.
+2. Dashboard → add a **Joystick** widget: topic `/cmd_vel_raw`, type `geometry_msgs/Twist`, axes mapped to `linear.x` (fwd/back) and `angular.z` (turn).
+3. Dashboard → add a **Button** widget as a dead-man switch: topic `/robot/arm`, type `std_msgs/Bool`, on-press value `true`, on-release value `false`. The motor arms while the button is held and disarms when you release. This is the safest arming pattern for teleop.
 4. Optionally add a **Logger** widget on `/robot/armed` and `/odom` to see feedback.
 
 You can also arm/disarm from the Nano shell:
@@ -288,9 +263,7 @@ You can verify arming works by watching `/robot/armed`. It should go true within
 
 ### 9. Optional: gesture control (third teleop mode)
 
-An alternative teleop option that works independently of ROS and WiFi.
-Uses a handheld Arduino with an MPU6050 IMU and nRF24L01+ radio to send
-tilt-derived velocity commands directly to the robot's Arduino.
+An alternative teleop option that works independently of ROS and WiFi. Uses a handheld Arduino with an MPU6050 IMU and nRF24L01+ radio to send tilt-derived velocity commands directly to the robot's Arduino.
 
 **Hardware on the handheld side:**
 - Arduino Uno / Nano / Pro Mini
@@ -306,21 +279,16 @@ tilt-derived velocity commands directly to the robot's Arduino.
 
 **Bringup:**
 
-1. Flash `gesture_handheld.ino` to the handheld Arduino. On boot it
-   calibrates the gyro (hold still for ~2 seconds, LED solid during cal).
+1. Flash `gesture_handheld.ino` to the handheld Arduino. On boot, it calibrates the gyro (hold still for ~2 seconds, LED solid during cal).
 2. Flash `gesture_receiver.ino` to the robot Mega.
 3. Open Arduino Serial Monitor at 115200 on the robot side. You should see `lin=0.00 ang=0.00 arm=0 armed=0 age=...ms pkt#=N`. If `pkt#` increments and `age` stays below ~100 ms, the link is working.
-4. Robot still on a stand. Hold the handheld level, press and HOLD the
-   arm button. You should see `arm=1` and `armed=1` on the robot serial.
-5. Gently tilt the handheld nose-down. Robot should drive forward.
-   Tilt right → robot turns right. Release the arm button → motors
-   disarm immediately.
-6. **Failsafe test:** with motors armed, power off the handheld while
-   holding the button. Within 300 ms the robot should disarm.
+4. Robot still on a stand. Hold the handheld level, press and HOLD the arm button. You should see `arm=1` and `armed=1` on the robot serial.
+5. Gently tilt the handheld nose-down. The robot should drive forward. Tilt right → robot turns right. Release the arm button → motors disarm immediately.
+6. **Failsafe test:** with motors armed, power off the handheld while holding the button. Within 300 ms, the robot should disarm.
 
 **Adjusting feel:**
 - `MAX_LIN_VEL`, `MAX_ANG_VEL`: top speeds at full tilt
-- `TILT_DEADBAND_DEG`: how much slack around level before motion starts
+- `TILT_DEADBAND_DEG`: how much slack around the level before motion starts
 - `TILT_MAX_DEG`: tilt angle where you hit top speed
 - `INVERT_PITCH`, `INVERT_ROLL`: flip either axis if mounting is different
 
@@ -339,42 +307,25 @@ sudo systemctl enable romr.service
 sudo systemctl start romr.service
 ```
 
-Check status with `systemctl status romr` and live logs with
-`journalctl -u romr -f`. Review the `User=`, paths, and environment in
-`romr.service` before enabling.
+Check status with `systemctl status romr` and live logs with `journalctl -u romr -f`. Review the `User=`, paths, and environment in `romr.service` before enabling.
 
 ---
 
 ## Troubleshooting
 
-**Arduino is flashing but motors don't respond.** Verify UART wiring (TX on
-one end → RX on the other, not TX→TX) and common ground. Test communication
-independently: from `odrivetool`, confirm `odrv0.axis0.error == 0` and
-`dump_errors(odrv0)` shows nothing. Then try a basic UART loopback test
-before involving the ODrive.
+**Arduino is flashing, but the motors don't respond.** Verify UART wiring (TX on one end → RX on the other, not TX→TX) and common ground. Test communication independently: from `odrivetool`, confirm `odrv0.axis0.error == 0` and
+`dump_errors(odrv0)` shows nothing. Then try a basic UART loopback test before involving the ODrive.
 
-**ROS-Mobile app connects but `/cmd_vel_raw` is empty.** The Android app's
-rosjava stack needs the numeric `ROS_IP` set on the Nano, hostname won't
-work. `rostopic list` should show the topic even before the app moves the
-stick; if not, check firewall on the Nano (`sudo ufw status`; disable or
-open port 11311 and TCPROS range).
+**ROS-Mobile app connects, but `/cmd_vel_raw` is empty.** The Android app's rosjava stack needs the numeric `ROS_IP` set on the Nano; hostname won't work. `rostopic list` should show the topic even before the app moves the
+stick; if not, check firewall on the Nano (`sudo ufw status`; disable or open port 11311 and TCPROS range).
 
-**Robot moves but odom drifts badly.** Some drift is expected from wheel-based
-odometry (no IMU fusion). Excessive drift usually means `wheel_base` is
-wrong in `romr_odom_node.py`, or the motor velocity scaling in the sketch is
-off. Verify by commanding 1 m/s forward, driving in a straight line, and
-checking that `/odom` reports ~1 m/s.
+**Robot moves, but odom drifts badly.** Some drift is expected from wheel-based odometry (no IMU fusion). Excessive drift usually means `wheel_base` is wrong in `romr_odom_node.py`, or the motor velocity scaling in the sketch is
+off. Verify by commanding 1 m/s forward, driving in a straight line, and checking that `/odom` reports ~1 m/s.
 
-**Calibration keeps failing with illegal hall state despite pullups being
-correct.** It's likely physical EMI. Solutions in order of effort: enable
-`ignore_illegal_hall_state = True` (via `retry_axis1.py`); route hall cables
-away from motor phase wires; shorten hall cables; add a ferrite bead; use
-shielded cable for halls.
+**Calibration keeps failing with an illegal hall state despite pullups being correct.** It's likely physical EMI. Solutions in order of effort: enable `ignore_illegal_hall_state = True` (via `retry_axis1.py`); route hall cables
+away from motor phase wires; shorten hall cables; add a ferrite bead; use shielded cable for halls.
 
-**The ODrive loses USB connection during save.** Normal. Every
-`save_configuration()` call triggers a reboot to commit flash, and USB drops
-for ~2 seconds. The script's `ObjectLostError` / "disappeared" message is
-expected.
+**The ODrive loses USB connection during save.** Normal. Every `save_configuration()` call triggers a reboot to commit flash, and USB drops for ~2 seconds. The script's `ObjectLostError` / "disappeared" message is expected.
 
 ---
 
@@ -390,14 +341,11 @@ Gives you a full dump of config and error state. From there:
 
 - Any `motor.error` or `encoder.error` → run `odrive_calibration.py` again
 - Any `axis.error` that won't clear → power cycle and try again
-- Wrong pole_pairs, cpr, or control_mode → rerun
-  `odrive_parameter_configuration.py` (wipes calibration, but recovers
-  known-good config)
-- Truly stuck → `odrv0.erase_configuration()` in odrivetool, then restart
-  the bringup sequence from step 2
+- Wrong pole_pairs, cpr, or control_mode → rerun `odrive_parameter_configuration.py` (wipes calibration, but recovers known-good config)
+- Truly stuck → `odrv0.erase_configuration()` in odrivetool, then restart the bringup sequence from step 2
 
 ---
 
 ## Acknowledgement
 
-The calibration script structure is inspired by the ODrive hoverboard tutorial (docs.odriverobotics.com) and Austin Owens' robodog config. ROS-Mobile app is developed by Nils Rottmann.
+The calibration script structure is inspired by the ODrive hoverboard tutorial (docs.odriverobotics.com) and Austin Owens' robodog config. The ROS-Mobile app is developed by Nils Rottmann.
