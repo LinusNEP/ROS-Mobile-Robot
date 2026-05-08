@@ -35,7 +35,7 @@ Environment="HOME=/home/romr"
 
 # Source ROS + your catkin workspace, then launch.
 # The 'bash -lc' form makes sure ~/.bashrc and setup.bash are actually sourced.
-ExecStart=/bin/bash -lc 'source /opt/ros/melodic/setup.bash && \
+ExecStart=/bin/bash -lc 'source /opt/ros/noetic/setup.bash && \
     source /home/romr/catkin_ws/devel/setup.bash && \
     roslaunch romr_bringup romr_bringup.launch'
 
