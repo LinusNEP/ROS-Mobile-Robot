@@ -1,4 +1,4 @@
-## ROMR
+## ROMR: A ROS-Based Open-Source Mobile Robot
 [![Project Website](https://img.shields.io/badge/ROMR%20Project-Website-lightblue?style=flat&logo=globe&logoColor=white)](https://linusnep.github.io/ROS-Mobile-Robot/)
 [![ROS 1](https://img.shields.io/badge/ROS-Noetic-brightgreen.svg)](http://www.ros.org/)
 [![ROS 2](https://img.shields.io/badge/ROS%202-Humble-blue.svg)](https://index.ros.org/doc/ros2/)
