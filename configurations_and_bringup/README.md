@@ -1,6 +1,6 @@
 # ROMR ODrive Calibration & Bringup
 
-This directory contains everything needed to get started with ROMR setup and calibration. The workflow is as follows: configure parameters, calibrate motors and halls, verify operation over USB, wire up the Arduino, then stack ROS on top. Each step is independent and builds on the last.
+This directory provides everything needed to get started with ROMR setup and calibration. The structure is as follows: configure parameters, calibrate motors and halls, verify operation over USB, wire up the Arduino, then stack ROS on top. Each step is independent and builds on the last.
 
 ---
 
