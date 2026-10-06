@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-// Copy Button Component
 function CopyButton({ commands }: { commands: string }) {
   const [copied, setCopied] = useState(false);
   
