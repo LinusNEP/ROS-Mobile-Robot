@@ -864,8 +864,7 @@ set_velocity(pitch, roll)`
             <h2 className="text-4xl sm:text-5xl font-bold mb-4">One Shift in the Warehouse</h2>
             <p className="text-[#666666] max-w-3xl mx-auto">
               ROMR's CAD model and drive parameters in a MuJoCo digital twin of a 40 &times; 24 m warehouse:
-              three robots and four workers through four missions, simulated at 1 kHz and path-traced in
-              Blender Cycles.
+              three robots and four workers through four missions.
             </p>
           </div>
 
