@@ -1,14 +1,9 @@
 #!/usr/bin/env bash
-# Rebuild the project website from docs/src and publish it into docs/ (served by GitHub Pages).
-#
-# docs/index.html and docs/assets/ are *build output* - edit docs/src/App.tsx, then run:
-#     cd docs && npm ci && bash build_site.sh
-# and commit docs/index.html + docs/assets/ together with the source change.
+
 set -euo pipefail
 cd "$(dirname "$0")"
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
-# build from a copy whose index.html is the Vite *source* entry (the one in docs/ is the built page)
 cp -r src package.json vite.config.ts tsconfig*.json tailwind.config.js postcss.config.js components.json "$TMP"/
 ln -s "$PWD/node_modules" "$TMP/node_modules"
 cat > "$TMP/index.html" <<'HTML'
