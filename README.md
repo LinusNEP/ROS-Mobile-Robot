@@ -26,7 +26,7 @@ ROMR's CAD model and drive parameters in a MuJoCo digital twin of a 40 × 24 m w
 | 3 · Blocked aisle replanning | The lidar detects a toppled carton stack, and a new route is replanned. |
 | 4 · Fleet traffic & fault recovery | Three robots share lanes through node and edge reservations, recover from wheel slip on oil and return to charge. |
 
-### Repository contents
+### Contents
 
 | Folder | Contents |
 |---|---|
