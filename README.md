@@ -13,7 +13,7 @@ All the design, construction and software files are publicly available under the
 
 More information can be found on the [Project Website](https://linusnep.github.io/ROS-Mobile-Robot/).
 
-### Digital twin: one shift in a MuJoCo warehouse
+### Digital twin: a shift in MuJoCo warehouse
 
 [![ROMR digital twin - one shift in a MuJoCo warehouse](docs/media/romr_digital_twin_thumb.jpg)](https://linusnep.github.io/ROS-Mobile-Robot/#digital-twin)
 
