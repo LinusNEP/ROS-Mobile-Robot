@@ -32,7 +32,7 @@ import {
   BookOpen, Github, Menu, X, Battery, Zap, Gauge, 
   Maximize, Weight, Timer, Layers, Radio, Smartphone,
   Move, Code, Terminal, ExternalLink, Play, CheckCircle2,
-  Wrench, AlertCircle, Copy, Check
+  Wrench, AlertCircle, Copy, Check, MessageSquare, Users, Route, Truck
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -78,6 +78,7 @@ function App() {
     { href: '#features', label: 'Features' },
     { href: '#hardware', label: 'Hardware' },
     { href: '#software', label: 'Software' },
+    { href: '#digital-twin', label: 'Digital Twin' },
     { href: '#setup', label: 'Setup' },
     { href: '#gallery', label: 'Gallery' },
     { href: '#build', label: 'Build' },
@@ -97,7 +98,7 @@ function App() {
       icon: Settings,
       title: 'ROS Compatible',
       description: 'Full compatibility with ROS Melodic and ROS Noetic. Easily portable to ROS 2.',
-      image: '${import.meta.env.BASE_URL}feature-ros.png'
+      image: 'feature-ros.png'
     },
     {
       icon: Cpu,
@@ -114,9 +115,39 @@ function App() {
     {
       icon: Box,
       title: 'Simulation Ready',
-      description: 'Complete Gazebo simulation with URDF models and virtual sensors.',
+      description: 'Gazebo simulation with URDF models and virtual sensors, plus a MuJoCo digital twin of a full warehouse shift.',
       image: 'feature-simulation.png'
     }
+  ];
+
+  const twinMissions = [
+    {
+      icon: MessageSquare,
+      title: 'Language command to plan',
+      description: 'A natural-language instruction is grounded against a scene graph and turned into a route that avoids a wet floor.',
+    },
+    {
+      icon: Users,
+      title: 'Human-aware navigation',
+      description: 'Speed and separation monitoring slows the robot near workers and stops it inside the protective field.',
+    },
+    {
+      icon: Route,
+      title: 'Blocked aisle replanning',
+      description: 'The lidar detects a toppled carton stack; the blocked graph edge is removed and a new route is planned live.',
+    },
+    {
+      icon: Truck,
+      title: 'Fleet traffic & fault recovery',
+      description: 'Three robots share lanes through node and edge reservations, recover from wheel slip on oil and return to charge.',
+    },
+  ];
+
+  const twinFacts = [
+    { value: '1 kHz', label: 'MuJoCo physics' },
+    { value: '3', label: 'robots, 4 workers' },
+    { value: '0', label: 'contacts' },
+    { value: '0.42 m', label: 'closest person' },
   ];
 
   const hardwareLayers = [
@@ -538,7 +569,7 @@ set_velocity(pitch, roll)`
             >
               <div className="relative">
                 <img
-                  src="/robot-hero.png"
+                  src="robot-hero.jpg"
                   alt="ROMR Robot"
                   className="w-full max-w-lg mx-auto drop-shadow-2xl"
                 />
@@ -815,6 +846,76 @@ set_velocity(pitch, roll)`
               </div>
             </div>
           </Tabs>
+        </div>
+      </section>
+
+      {/* Digital Twin Section */}
+      <section 
+        id="digital-twin" 
+        className="py-24 relative"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className={`text-center mb-12 transition-all duration-700 ${
+            visibleSections.has('digital-twin') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}>
+            <Badge variant="outline" className="mb-4 border-[#d0ff59] text-[#d0ff59]">
+              MUJOCO DIGITAL TWIN
+            </Badge>
+            <h2 className="text-4xl sm:text-5xl font-bold mb-4">One Shift in the Warehouse</h2>
+            <p className="text-[#666666] max-w-3xl mx-auto">
+              ROMR's CAD model and drive parameters in a MuJoCo digital twin of a 40 &times; 24 m warehouse:
+              three robots and four workers through four missions, simulated at 1 kHz and path-traced in
+              Blender Cycles.
+            </p>
+          </div>
+
+          <div className={`rounded-xl overflow-hidden border border-[#3d3d3d] bg-black shadow-2xl transition-all duration-700 ${
+            visibleSections.has('digital-twin') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}>
+            <video
+              className="w-full aspect-video"
+              controls
+              playsInline
+              preload="metadata"
+              poster="media/romr_digital_twin_poster.jpg"
+            >
+              <source src="media/romr_digital_twin.mp4" type="video/mp4" />
+              Your browser cannot play this video.{' '}
+              <a href="media/romr_digital_twin.mp4" className="text-[#d0ff59]">Download it here</a>.
+            </video>
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+            {twinFacts.map((fact) => (
+              <div key={fact.label} className="bg-[#141414] border border-[#3d3d3d] rounded-xl p-5 text-center">
+                <div className="text-3xl font-bold text-[#d0ff59]">{fact.value}</div>
+                <div className="text-sm text-[#666666] mt-1">{fact.label}</div>
+              </div>
+            ))}
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+            {twinMissions.map((mission, index) => (
+              <Card
+                key={mission.title}
+                className={`bg-[#141414] border-[#3d3d3d] hover:border-[#d0ff59]/50 transition-all duration-500 ${
+                  visibleSections.has('digital-twin') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
+                style={{ transitionDelay: `${index * 120}ms` }}
+              >
+                <CardHeader className="pb-2">
+                  <div className="flex items-center gap-3">
+                    <mission.icon className="w-6 h-6 text-[#d0ff59]" />
+                    <span className="text-xs font-mono text-[#666666]">MISSION {index + 1}</span>
+                  </div>
+                  <CardTitle className="text-lg mt-2">{mission.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-[#666666]">{mission.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -1152,7 +1253,8 @@ set_velocity(pitch, roll)`
               <ul className="space-y-2 text-sm text-[#666666]">
                 <li><a href="https://github.com/LinusNEP/ROS-Mobile-Robot" className="hover:text-[#d0ff59] transition-colors">Design Files</a></li>
                 <li><a href="https://osf.io/ku8ag" className="hover:text-[#d0ff59] transition-colors">Demo Video</a></li>
-                <li><a href="#" className="hover:text-[#d0ff59] transition-colors">Documentation</a></li>
+                <li><a href="#digital-twin" className="hover:text-[#d0ff59] transition-colors">Digital Twin Video</a></li>
+                <li><a href="https://github.com/LinusNEP/ROS-Mobile-Robot#readme" className="hover:text-[#d0ff59] transition-colors">Documentation</a></li>
               </ul>
             </div>
             
