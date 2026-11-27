@@ -15,7 +15,7 @@ More information can be found on the [Project Website](https://linusnep.github.i
 
 ### Digital twin: a shift in MuJoCo warehouse
 
-[![ROMR digital twin - one shift in a MuJoCo warehouse](docs/media/romr_digital_twin_thumb.jpg)](https://linusnep.github.io/ROS-Mobile-Robot/#digital-twin)
+[![ROMR digital twin - one shift in a MuJoCo warehouse](docs/public/media/romr_digital_twin_thumb.jpg)](https://linusnep.github.io/ROS-Mobile-Robot/#digital-twin)
 
 ROMR's CAD model and drive parameters in a MuJoCo digital twin of a 40 × 24 m warehouse: three robots and four workers work through four missions ([watch on the project website](https://linusnep.github.io/ROS-Mobile-Robot/#digital-twin) or [download the MP4](https://linusnep.github.io/ROS-Mobile-Robot/media/romr_digital_twin.mp4)).
 
